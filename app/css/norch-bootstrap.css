@@ -1,0 +1,72 @@
+html {overflow: -moz-scrollbars-vertical; overflow: scroll;}
+body {background:#ddd; font-size:1.8em;}
+h2 {color:#000;margin-left:0;padding-left:0;}
+h3 a {color:#000;}
+
+blockquote {
+	border-left: 5px solid #ddd;
+	margin: 1em 0;
+	padding: 10px;
+	quotes: "\201C""\201D";}
+blockquote:before {
+	color: #ccc;
+	content: open-quote;
+	font-size: 4em;
+	line-height: 0.1em;
+	margin-right: 0.25em;
+	vertical-align: -0.4em;
+}
+
+b.panel-title {margin-left:-27px; color:#666;}
+#tab-content-id {margin-top: 30px}
+
+.container-fluid, .navbar-header {min-height:400px;}
+.navbar {margin-bottom:10px;padding:3px 8px 5px 8px;border-radius:0px 0px 0px 10px;}
+.navbar .form-control {border:none;}
+.navbar input {margin-top:4px;}
+.navbar-default {background:#bbb;border:none;box-shadow:none;}
+.navbar-brand {padding:0 0 0 0; margin-top:4px;}
+.navbar-brand img {border-radius:0 0 0 4px;}
+.navbar-form {margin-left:-15px;}
+.navbar-collapse {padding-left:0;}
+.searchbox {border-radius:0 0 0 0; position:relative;}
+.icon-search {position:absolute; right:10px; top:10px; z-index:100; font-size:1.2em; color:#999;}
+
+.mesearch {width:46px; height:46px;}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form, .input-lg {
+	border:none;
+}
+
+.row {margin-right:0px;margin-left:0px;position:relative; }
+.facets {margin-left:54px;box-sizing:border-box;}
+.facets .count {color:#99c;}
+.facets .btn-group-vertical > .btn, .btn-group > .btn { float:none;}
+.facets .btn-group, .btn-group-vertical {margin-bottom:7px;}
+
+.panel {border:none;box-shadow:none;border-radius:0px;padding-left:54px;}
+.type {font-size:1.9em;position:absolute;display:block;z-index:10;left:8px;top:12px;width:50px;height:50px;padding:0px;color:#000;}
+
+.panel.row img {max-width: 100%;}
+
+.col-sm-5 {padding:15px;}
+.row .col-sm-5, .row .col-sm-7, .row .col-sm-12 {overflow-x:hidden;}
+
+.flickr img {width:100%;}
+.gravatar img {width:50%;}
+
+.red{color:red}
+
+#viewdiv{padding-top: 5px}
+
+.sc-em{background:#ffffbb;}
+
+@media (max-width: 767px) {
+	.navbar-collapse.in {
+	  overflow-y:visible;
+	}
+	.icon-search {right:69px;}
+}
+@media (min-width: 768px) {
+	#menuNavigators {display:none;}
+}

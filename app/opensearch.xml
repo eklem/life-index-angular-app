@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <ShortName>Life Index</ShortName>
+   <Description>Your digital life searchable</Description>
+   <Tags>search</Tags>
+   <Contact>espen.klem@gmail.com</Contact>
+   <Image height="16" width="16" type="image/x-icon">http://localhost:3030/images/favicon.ico</Image>
+   <Image height="64" width="64" type="image/png">http://localhost:3030/images/favicon.png</Image>
+   <Url type="application/x-suggestions+json"
+      rel="suggestions" method="GET"
+      template="http://localhost:3030/opensearchsuggests?beginsWith={searchTerms}" />
+   <!-- <Url type="text/html" method="GET" 
+        template="http://localhost:8000/app/#/search?q={searchTerms}&amp;facets=user,type,tags"/> -->
+   <Url type="text/html" method="GET" 
+        template="http://localhost:8000/app/#/search?JSONq=%7B%22query%22:%7B%22*%22:%5B%22{searchTerms}%22%5D%7D,%22facets%22:%7B%22type%22:%7B%7D,%22user%22:%7B%22limit%22:10%7D,%22tags%22:%7B%22limit%22:10%7D%7D,%22facetLength%22:10,%22maxFacetLimit%22:10,%22offset%22:0,%22pageSize%22:20,%22teaser%22:%22teasertext%22%7D"/>
+        
+ </OpenSearchDescription>

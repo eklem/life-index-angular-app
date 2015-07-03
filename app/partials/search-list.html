@@ -1,0 +1,180 @@
+<div class="container-fluid">
+ 
+  <div class="row">
+    <div class="col-sm-12 navbar-header">
+      <nav class="navbar navbar-default" role="navigation">
+        <div class="input-group input-group-lg" role="group">
+          <span class="input-group-btn">
+            <a class="navbar-brand" href="#/about"><img src="https://secure.gravatar.com/avatar/344c215281fbce2fd50448e4a3c558d9?s=200&r=pg&d=wavatar" class="mesearch" /></a>
+          </span>
+          <input type="text" 
+                 ng-model="searchTerm" 
+                 class="form-control form-lg input-lg searchbox"
+                 placeholder="My digital life - Searchable"
+                 autofocus="autofocus"
+                 typeahead="suggestion for suggestion in matcher($viewValue)"
+                 typeahead-on-select="onSelect($item)" />
+                 <span class="icon-search"></span>
+          <span class="input-group-btn" id="menuNavigators">
+            <button type="button" class="btn btn-primary btn-lg collapsed" data-toggle="collapse" data-target="#facets" aria-expanded="false">
+              <span class="icon-menu"></span>
+            </button>
+          </span>
+        </div>
+      </nav>
+
+
+
+      <!--Sidebar content-->
+      <div class="facets collapse navbar-collapse" id="facets">
+        <div ng-repeat="facetGroup in searchresult.facets">
+          <div class="" ng-if="facetGroup.key == 'type'">
+            <!-- {{facetGroup.key}} -->
+            <div class="btn-group" role="group" aria-label="...">
+              <a ng-repeat="pair in facetGroup.value"
+                 ng-if="pair.active != true"
+                 ng-href="{{getFilterUrl(facetGroup, pair, searchresult.query)}}" class="btn btn-primary btn-lg">
+                <i class="icon-{{pair.key}}"></i> <span class="count">{{pair.value}}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div ng-repeat="facetGroup in searchresult.facets">
+          <div class="" ng-if="facetGroup.key != 'type'">
+            <b class="panel-title"><i class="icon-{{facetGroup.key}}"></i> </b>
+            <div class="btn-group" role="group" aria-label="...">
+              <a ng-repeat="pair in facetGroup.value"
+                 ng-if="pair.active != true"
+                 ng-href="{{getFilterUrl(facetGroup, pair, searchresult.query)}}" class="btn btn-primary btn-sm">
+                {{pair.key}} <span class="count">{{pair.value}}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="results">
+        <h2>
+          {{searchresult.totalHits}}
+          <small ng-if="searchresult.query">hits for </small>
+          <span ng-Bind="searchTerm"></span>
+          <span ng-if="searchresult.query.filter">
+            <small>filtered on</small>
+
+            <span ng-repeat="facetGroup in searchresult.facets">
+              <span ng-repeat="pair in facetGroup.value">
+                <span ng-if="pair.active == true">
+                  <a ng-if="facetGroup.key == 'type'" href="{{getUnFilterUrl(facetGroup, pair, searchresult.query)}}"
+                     class="btn btn-default btn-md"><i class="icon-{{pair.key}}"></i></a>
+                  <a ng-if="facetGroup.key != 'type'" href="{{getUnFilterUrl(facetGroup, pair, searchresult.query)}}"
+                     class="btn btn-default btn-md"><i class="icon-{{facetGroup.key}}"></i>{{pair.key}}</a>
+                </span>
+              </span>
+            </span>
+          </span>
+        </h2>
+
+
+      <!-- <p>{{searchresult.query}}</p>
+      <p ng-repeat="facetGroup in searchresult.facets">{{facetGroup}}</p> -->
+
+
+      <div ng-repeat="item in searchresult.hits">
+        
+        <!-- Twitter -->
+        <div class="panel twitter row" ng-if="item.document.type == 'Twitter'">
+          <div class="type" ng-repeat="type in item.document.type"><i class="icon-{{type}}"></i></div>
+          <div class="col-sm-7 left">
+            <h3 ng-if="item.document.text != 'null' && (item.document.teaser == null || item.document.teaser == 'null')"><a ng-href="{{item.document.link}}">{{item.document.text}}</a></h3>
+            <h3 ng-if="item.document.teaser != 'null'"><a ng-href="{{item.document.link}}" ng-bind-html="trustworthy(item.document.teaser)"></a></h3>
+            <p ng-if="item.document.tags != null">
+              <span ng-repeat="tag in item.document.tags"><a ng-href="https://twitter.com/search?q=%23{{tag}}&src=typd">#{{tag}}</a>{{$last ? '' : ', '}}</span>
+            </p>
+            <p>{{item.document.datehuman}}</p>
+          </div>
+          <div class="col-sm-5 right">
+            <p ng-if="item.document.user != null" ng-repeat="user in item.document.user">
+              <a ng-href="https://twitter.com/{{user}}"><span class="icon-person"></span> {{user}}</a>
+            </p>
+            <p ng-if="item.document.links != null" ng-repeat="link in item.document.links">
+              <a ng-href="{{link}}">{{link}}</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- Flickr -->
+        <div class="panel row flickr" ng-if="item.document.type == 'Flickr'">
+          <div class="type" ng-repeat="type in item.document.type"><i class="icon-{{type}}"></i></div>
+          <div class="col-sm-7 left">
+            <h3><a ng-href="{{item.document.url}}">{{item.document.title}}</a></h3>
+            <blockquote ng-if="item.document.teaser != 'null'" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
+            <p ng-if="item.document.text != 'null' && item.document.teaser == 'null'">{{item.document.text}}</p>
+            <p ng-if="item.document.tags != null">
+              <span ng-repeat="tag in item.document.tags"><a ng-href="https://www.flickr.com/search/?w=23874626@N06&q=%23{{tag}}">#{{tag}}</a>{{$last ? '' : ', '}}</span>
+            </p>
+            <p>{{item.document.datehuman}}</p>
+          </div>
+          <div class="col-sm-5 right">
+            <a class="photo" href="{{item.document.url}}"><img ng-src="{{item.document.urlimage}}" /></a>
+            <a ng-repeat="user in item.document.user" ng-href="https://flickr.com/photos/{{user}}"><span class="icon-person"></span> {{user}}</a>
+          </div>
+        </div>
+
+        <!-- Gmail -->
+        <div class="panel row gmail" ng-if="item.document.type == 'Gmail'">
+          <div class="type" ng-repeat="type in item.document.type"><i class="icon-{{type}}"></i></div>
+          <div class="col-sm-7 left">
+            <h3>{{item.document.title}}</h3>
+            <blockquote ng-if="item.document.teaser != 'null'" ng-bind-html="trustworthy(item.document.teaser)">{{item.document.teaser}}</blockquote>
+            <p ng-if="item.document.text != 'null'" ng-bind-html="item.document.text"></p>
+            <p><span ng-repeat="tag in item.document.tags">#{{tag}}{{$last ? '' : ', '}}</span></p>
+          </div>
+          <div class="col-sm-5 right">
+            <a class="gravatar" href="mailto:{{item.document.email}}"><img ng-src="{{item.document.gravatar}}"></a>
+            <p><a ng-href="mailto:{{item.document.email}}"><span class="icon-person"></span> {{item.document.email}}</a></p>
+            <p ng-if="item.document.fileurlpublic != 'https://ifttt.com/images/file_not_found.png'">
+              <span class="glyphicon glyphicon-file" aria-hidden="true"></span> <a ng-href="{{item.document.fileurlpublic}}">{{item.document.file}}</a>
+            </p>
+            <p>{{item.document.datehuman}}</p>
+          </div>
+        </div>
+
+        <!-- GitHub -->
+        <div class="panel row github" ng-if="item.document.type == 'GitHub'">
+          <div class="type" ng-repeat="type in item.document.type"><i class="icon-{{type}}"></i></div>
+          <div class="col-sm-7 left">
+            <h3><a ng-href="{{item.document.url}}">{{item.document.title}}</a></h3>
+            <blockquote ng-if="item.document.teaser != 'null'" ng-bind-html="trustworthy(item.document.teaser)">}</blockquote>
+            <p ng-if="item.document.text != 'null'" ng-bind-html="item.document.text"></p>
+            <p><span ng-repeat="tag in item.document.tags">#{{tag}}{{$last ? '' : ', '}}</span></p>
+          </div>
+          <div class="col-sm-5 right">
+            <h4><a ng-href="https://github.com/{{item.document.user[0]}}/{{item.document.repository}}">{{item.document.repository}}</a>  - <span class="{{item.document.issuetype}}">{{item.document.issuetype}}</span></h4>
+            <a ng-repeat="user in item.document.user" ng-href="https://github.com/{{user}}"><span class="icon-person"></span> {{user}}</a>
+            <p>{{item.document.datehuman}}</p>
+          </div>
+        </div>
+
+        <!-- Debug new sources -->
+        <div class="panel row generic" ng-if="item.document.type != 'Twitter' && item.document.type != 'Flickr' && item.document.type != 'Gmail' && item.document.type != 'GitHub'">
+        <!-- <div class="panel row generic"> -->
+          <div class="col-sm-12">
+            <div ng-repeat='(key, value) in item.document'>
+              <b>{{key}}:</b> {{value}}
+            </div>
+          </div>
+        </div>
+
+
+
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
