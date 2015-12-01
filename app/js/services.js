@@ -14,5 +14,23 @@ searchcatServices.factory('Search', ['$resource',
         query: { method: 'GET', params: {}, isArray: true }
       }),
     }
-  }]);
+    }]
+).service('auth', [
+  '$http',
+  function ($http) {
+    this.login = function (username, password) {
+      return $http({
+        method: 'POST',
+        url: 'http://localhost:3030/login',
+        data: JSON.stringify({document: {username: username, password: password}}),
+      })
+        .then(function (res) {
+          if (res.status == 200) {
+            localStorage.setItem('userData', JSON.stringify({timestamp: Date.now(), loggedIn: true}));
+          }
+          return true
+        });
 
+    }
+  }]
+);
