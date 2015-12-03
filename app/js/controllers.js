@@ -46,7 +46,7 @@ searchcatControllers.controller('SearchListCtrl', ['$sce', '$http', '$scope', '$
 
     //watch the search box
     $scope.$watch("searchTerm", function(){ 
-      if ($scope.searchTerm) if ($scope.searchTerm.length > 2) {
+      if ($scope.searchTerm) if ($scope.searchTerm.length > 0) {
 //something like
 //http://localhost:3030/search?q={"query":{"*":["ethiopia"]},%20"facets":{"mjtheme":{}}}
         var q = {};
