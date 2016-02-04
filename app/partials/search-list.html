@@ -127,8 +127,7 @@
                     <div class="col-sm-7 left">
                         <h3>{{item.document.title}}</h3>
                         <blockquote ng-show="item.document.teaser" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
-                        <p ng-show="!item.document.teaser" ng-bind-html="trustworthy(item.document.text)"></p>
-                        <p ng-if="item.document.text != 'null'" ng-bind-html="item.document.text"></p>
+                        <p>{{item.document.teasertext | limitTo: 300}}{{item.document.teasertext.length > 300 ? '[...]' : ''}}</p>
                         <p><span ng-repeat="tag in item.document.tags track by $index">#{{tag}}{{$last ? '' : ', '}}</span></p>
                     </div>
                     <div class="col-sm-5 right">
@@ -147,8 +146,7 @@
                     <div class="col-sm-7 left">
                         <h3><a ng-href="{{item.document.url}}">{{item.document.title}}</a></h3>
                         <blockquote ng-show="item.document.teaser" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
-                        <blockquote ng-show="!item.document.teaser" ng-bind-html="trustworthy(item.document.text)"></blockquote>
-                        <p ng-if="item.document.text != 'null'" ng-bind-html="item.document.text"></p>
+                        <p ng-bind-html="trustworthy(item.document.text)"></blockquote>
                         <p><span ng-repeat="tag in item.document.tags track by $index">#{{tag}}{{$last ? '' : ', '}}</span></p>
                     </div>
                     <div class="col-sm-5 right">
