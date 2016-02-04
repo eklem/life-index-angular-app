@@ -83,8 +83,10 @@
                 <div class="panel twitter row search-listing" ng-if="item.document.type == 'Twitter'">
                     <div class="type" ng-repeat="type in item.document.type track by $index"><i class="icon-{{type}}"></i></div>
                     <div class="col-sm-7 left">
-                        <h3 ng-if="item.document.text != 'null' && (item.document.teaser == null || item.document.teaser == 'null')"><a ng-href="{{item.document.link}}">{{item.document.text}}</a></h3>
-                        <h3 ng-if="item.document.teaser != 'null'"><a ng-href="{{item.document.link}}" ng-bind-html="trustworthy(item.document.teaser)"></a></h3>
+                        <h3>
+                            <a ng-href="{{item.document.link}}" ng-show="item.document.teaser" ng-bind-html="trustworthy(item.document.teaser)"></a>
+                            <a ng-href="{{item.document.link}}" ng-show="!item.document.teaser" ng-bind-html="trustworthy(item.document.text)"></a>
+                        </h3>
                         <p ng-if="item.document.tags != null">
                             <span ng-repeat="tag in item.document.tags track by $index"><a ng-href="https://twitter.com/search?q=%23{{tag}}&src=typd">#{{tag}}</a>{{$last ? '' : ', '}}</span>
                         </p>
@@ -105,7 +107,8 @@
                     <div class="type" ng-repeat="type in item.document.type track by $index"><i class="icon-{{type}}"></i></div>
                     <div class="col-sm-7 left">
                         <h3><a ng-href="{{item.document.url}}">{{item.document.title}}</a></h3>
-                        <blockquote ng-if="item.document.teaser != 'null'" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
+                        <blockquote ng-show="item.document.teaser" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
+                        <blockquote ng-show="!item.document.teaser" ng-bind-html="trustworthy(item.document.text)"></blockquote>
                         <p ng-if="item.document.text != 'null' && item.document.teaser == 'null'">{{item.document.text}}</p>
                         <p ng-if="item.document.tags != null">
                             <span ng-repeat="tag in item.document.tags track by $index"><a ng-href="https://www.flickr.com/search/?w=23874626@N06&q=%23{{tag}}">#{{tag}}</a>{{$last ? '' : ', '}}</span>
@@ -123,7 +126,8 @@
                     <div class="type" ng-repeat="type in item.document.type track by $index"><i class="icon-{{type}}"></i></div>
                     <div class="col-sm-7 left">
                         <h3>{{item.document.title}}</h3>
-                        <blockquote ng-if="item.document.teaser != 'null'" ng-bind-html="trustworthy(item.document.teaser)">{{item.document.teaser}}</blockquote>
+                        <blockquote ng-show="item.document.teaser" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
+                        <p ng-show="!item.document.teaser" ng-bind-html="trustworthy(item.document.text)"></p>
                         <p ng-if="item.document.text != 'null'" ng-bind-html="item.document.text"></p>
                         <p><span ng-repeat="tag in item.document.tags track by $index">#{{tag}}{{$last ? '' : ', '}}</span></p>
                     </div>
@@ -142,19 +146,20 @@
                     <div class="type" ng-repeat="type in item.document.type track by $index"><i class="icon-{{type}}"></i></div>
                     <div class="col-sm-7 left">
                         <h3><a ng-href="{{item.document.url}}">{{item.document.title}}</a></h3>
-                        <blockquote ng-if="item.document.teaser != 'null'" ng-bind-html="trustworthy(item.document.teaser)">}</blockquote>
+                        <blockquote ng-show="item.document.teaser" ng-bind-html="trustworthy(item.document.teaser)"></blockquote>
+                        <blockquote ng-show="!item.document.teaser" ng-bind-html="trustworthy(item.document.text)"></blockquote>
                         <p ng-if="item.document.text != 'null'" ng-bind-html="item.document.text"></p>
                         <p><span ng-repeat="tag in item.document.tags track by $index">#{{tag}}{{$last ? '' : ', '}}</span></p>
                     </div>
                     <div class="col-sm-5 right">
                         <h4><a ng-href="https://github.com/{{item.document.user[0]}}/{{item.document.repository}}">{{item.document.repository}}</a>  - <span class="{{item.document.issuetype}}">{{item.document.issuetype}}</span></h4>
-                        <a ng-repeat="user in item.document.user track by $index" ng-href="https://github.com/{{user}}"><span class="icon-person"></span> {{user}}</a>
+                        <a ng-repeat="user in item.document.user" ng-href="https://github.com/{{user}}"><span class="icon-person"></span> {{user}}</a>
                         <p>{{item.document.datehuman}}</p>
                     </div>
                 </div>
 
                 <!-- Debug new sources -->
-<!--                <div class="panel row generic search-listing" ng-if="item.document.type != 'Twitter' && item.document.type != 'Flickr' && item.document.type != 'Gmail' && item.document.type != 'GitHub'">-->
+                <div class="panel row generic search-listing" ng-if="item.document.type != 'Twitter' && item.document.type != 'Flickr' && item.document.type != 'Gmail' && item.document.type != 'GitHub'">
                  <div class="panel row generic searc-listing"> 
                     <div class="col-sm-12">
                         <div ng-repeat="(key, value) in item.document track by $index">

@@ -4,30 +4,8 @@
 
 var searchcatControllers = angular.module('searchcatControllers', ['ui.bootstrap']);
 
-searchcatControllers.controller('SearchListCtrl', ['$sce', '$http', '$scope', '$location', 'Search', 'auth',
-  function($sce, $http, $scope, $location, Search, auth) {
-    $scope.username = null;
-    $scope.password = null;
-    $scope.login = function () {
-      auth.login($scope.username, $scope.password)
-        .then(function (res) {
-          if (res == true) {
-            $('#login').hide();
-            $('#search').show();
-          }
-        });
-    }
-
-    var userData = JSON.parse(localStorage.getItem('userData'));
-    if (userData && userData.loggedIn == true && Date.now() - userData.timestamp < 30*60*1000) {
-      console.log('already logged in');
-      $('#login').hide();
-      $('#search').show();
-    } else {
-      $('#search').hide()
-      $('#login').show();
-    }
-
+searchcatControllers.controller('SearchListCtrl', ['$sce', '$http', '$scope', '$location', 'Search',
+  function($sce, $http, $scope, $location, Search) {
     var queryObject = $location.search();
     var queryString = "";
     $scope.searchresult = Search.srch.query($location.search());
@@ -56,6 +34,8 @@ searchcatControllers.controller('SearchListCtrl', ['$sce', '$http', '$scope', '$
         q['facets']['type'] = {};
         q['facets']['user'] = {"limit":10};
         q['facets']['tags'] = {"limit":10};
+        q['teaser'] = "teasertext";
+        q['pageSize'] = 12;
         queryObject['q'] = JSON.stringify(q);
         $scope.searchresult = Search.srch.query(queryObject);
       }

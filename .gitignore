@@ -28,4 +28,4 @@ node_modules
 .lock-wscript
 
 # Bower components installed during 'npm install'
-bower_components
+app/bower_components
